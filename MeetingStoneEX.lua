@@ -113,7 +113,7 @@ function BrowsePanel:CreateExSearchPanel()
     -- body
     local ExSearchPanel = CreateFrame('Frame', nil, self, 'SimplePanelTemplate') do
         GUI:Embed(ExSearchPanel, 'Refresh')
-        ExSearchPanel:SetSize(200, 320)
+        ExSearchPanel:SetSize(250, 320)
         ExSearchPanel:SetPoint('TOPLEFT', MainPanel, 'TOPRIGHT', -2, -30)
         ExSearchPanel:SetFrameLevel(self.ActivityList:GetFrameLevel()+5)
         ExSearchPanel:EnableMouse(true)
