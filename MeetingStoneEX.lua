@@ -59,6 +59,25 @@ if MEETINGSTONE_UI_DB.IGNORE_TIPS_LOG == nil then
     MEETINGSTONE_UI_DB.IGNORE_TIPS_LOG = true
 end
 
+--职责过滤
+local function CheckJobsFilter(data,tcount,hcount,dcount)
+
+    local show = false
+    if not MEETINGSTONE_UI_DB.FILTER_TANK and not MEETINGSTONE_UI_DB.FILTER_HEALTH  and not MEETINGSTONE_UI_DB.FILTER_DAMAGE then
+        show = true
+    end
+    if MEETINGSTONE_UI_DB.FILTER_TANK and data.TANK < tcount then
+        show = true
+    end
+    if MEETINGSTONE_UI_DB.FILTER_HEALTH and data.HEALER < hcount then
+        show = true
+    end
+    if MEETINGSTONE_UI_DB.FILTER_DAMAGE and data.DAMAGER < dcount then
+        show = true
+    end
+    return show
+end
+
 --添加过滤功能
 BrowsePanel.ActivityList:RegisterFilter(function(activity, ...)
             local leader = activity:GetLeader()
@@ -85,14 +104,16 @@ BrowsePanel.ActivityList:RegisterFilter(function(activity, ...)
             end
             local data = C_LFGList.GetSearchResultMemberCounts(activity:GetID())
             if data then
-                if MEETINGSTONE_UI_DB.FILTER_TANK and  data.TANK > 0 then
-                    return false
-                end
-                if MEETINGSTONE_UI_DB.FILTER_HEALTH and data.HEALER > 0 then
-                    return false
-                end
-                if MEETINGSTONE_UI_DB.FILTER_DAMAGE and data.DAMAGER > 2 then
-                    return false
+                local tcount,hcount,dcount = 1,1,3
+                local activitytype = BrowsePanel.ActivityDropdown:GetText()
+                if activitytype == '地下城' then
+                    if not CheckJobsFilter(data,1,1,4) then
+                        return false
+                    end
+                elseif activitytype == '团队副本' then
+                    if not CheckJobsFilter(data,2,6,22) then
+                        return false
+                    end
                 end
             end
             local title = activity:GetSummary()
