@@ -59,23 +59,40 @@ if MEETINGSTONE_UI_DB.IGNORE_TIPS_LOG == nil then
     MEETINGSTONE_UI_DB.IGNORE_TIPS_LOG = true
 end
 
+if MEETINGSTONE_UI_DB.FILTER_MULTY == nil then
+    MEETINGSTONE_UI_DB.FILTER_MULTY = true
+end
+
 --职责过滤
 local function CheckJobsFilter(data,tcount,hcount,dcount)
 
-    local show = false
-    if not MEETINGSTONE_UI_DB.FILTER_TANK and not MEETINGSTONE_UI_DB.FILTER_HEALTH  and not MEETINGSTONE_UI_DB.FILTER_DAMAGE then
-        show = true
+    if MEETINGSTONE_UI_DB.FILTER_MULTY then
+        local show = false
+        if not MEETINGSTONE_UI_DB.FILTER_TANK and not MEETINGSTONE_UI_DB.FILTER_HEALTH  and not MEETINGSTONE_UI_DB.FILTER_DAMAGE then
+            show = true
+        end
+        if MEETINGSTONE_UI_DB.FILTER_TANK and data.TANK < tcount then
+            show = true
+        end
+        if MEETINGSTONE_UI_DB.FILTER_HEALTH and data.HEALER < hcount then
+            show = true
+        end
+        if MEETINGSTONE_UI_DB.FILTER_DAMAGE and data.DAMAGER < dcount then
+            show = true
+        end
+        return show
+    else
+        if MEETINGSTONE_UI_DB.FILTER_TANK and data.TANK >= tcount then
+            return false
+        end
+        if MEETINGSTONE_UI_DB.FILTER_HEALTH and data.HEALER >= hcount then
+            return false
+        end
+        if MEETINGSTONE_UI_DB.FILTER_DAMAGE and data.DAMAGER >= dcount then
+            return false
+        end
+        return true
     end
-    if MEETINGSTONE_UI_DB.FILTER_TANK and data.TANK < tcount then
-        show = true
-    end
-    if MEETINGSTONE_UI_DB.FILTER_HEALTH and data.HEALER < hcount then
-        show = true
-    end
-    if MEETINGSTONE_UI_DB.FILTER_DAMAGE and data.DAMAGER < dcount then
-        show = true
-    end
-    return show
 end
 
 --添加过滤功能
@@ -376,6 +393,7 @@ function BrowsePanel:CreateExSearchButton( )
     CreateMemberFilter(self,MainPanel,70,'坦克','FILTER_TANK')
     CreateMemberFilter(self,MainPanel,130,'治疗','FILTER_HEALTH')
     CreateMemberFilter(self,MainPanel,190,'输出','FILTER_DAMAGE')
+    CreateMemberFilter(self,MainPanel,250,'多专精("或"条件)','FILTER_MULTY')
 
     CreateScoreFilter(self,'过滤队长0分队伍',1)
 
