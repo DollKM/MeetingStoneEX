@@ -124,7 +124,7 @@ BrowsePanel.ActivityList:RegisterFilter(function(activity, ...)
                 local tcount,hcount,dcount = 1,1,3
                 local activitytype = BrowsePanel.ActivityDropdown:GetText()
                 if activitytype == '地下城' then
-                    if not CheckJobsFilter(data,1,1,4) then
+                    if not CheckJobsFilter(data,1,1,3) then
                         return false
                     end
                 elseif activitytype == '团队副本' then
