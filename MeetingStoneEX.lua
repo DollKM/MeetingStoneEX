@@ -405,11 +405,11 @@ function BrowsePanel:CreateExSearchButton( )
         self:SwitchPanel(self.AdvFilterPanel)
     end)
 
-    local checkbox = MainPanel
-    checkbox = CreateMemberFilter(self,checkbox,'BOTTOMLEFT',70,2,'坦克','FILTER_TANK')
-    checkbox = CreateMemberFilter(self,checkbox,'RIGHT',65,0,'治疗','FILTER_HEALTH')
-    checkbox = CreateMemberFilter(self,checkbox,'RIGHT',65,0,'输出','FILTER_DAMAGE')
-    checkbox = CreateMemberFilter(self,checkbox,'RIGHT',65,0,'多专精("或"条件)','FILTER_MULTY')
+    local checkbox = self.SignUpButton
+    checkbox = CreateMemberFilter(self,checkbox,'LEFT',-160,-1,'多专精("或"条件)','FILTER_MULTY')
+    checkbox = CreateMemberFilter(self,checkbox,'LEFT',-65,0,'输出','FILTER_DAMAGE')
+    checkbox = CreateMemberFilter(self,checkbox,'LEFT',-65,0,'治疗','FILTER_HEALTH')
+    checkbox = CreateMemberFilter(self,checkbox,'LEFT',-65,0,'坦克','FILTER_TANK')
 
     checkbox = CreateMemberFilter(self,self.SignUpButton,'RIGHT',30,-1,'同职过滤','FILTER_JOB')
 
