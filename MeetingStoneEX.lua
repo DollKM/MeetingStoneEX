@@ -342,6 +342,15 @@ local function CreateMemberFilter(self,parent, orgin,x,y,text,DB_Name)
             self.ActivityList:Refresh()
         end)
     end
+    local tooltip = (DB_Name == 'FILTER_DAMAGE' or DB_Name == 'FILTER_HEALTH' or DB_Name == 'FILTER_TANK') and "隐藏已有" .. text .. "职业的队伍"
+                    or (DB_Name == 'FILTER_JOB') and "五人副本时，隐藏已有" .. UnitClass("player") .. "DPS的队伍"
+                    or (DB_Name == 'IGNORE_TIPS_LOG') and "屏蔽了队长或同标题玩家时，聊天框里显示一次提示信息" or nil
+    if tooltip then
+        GUI:Embed(memberFilterCheckBox, 'Tooltip')
+        memberFilterCheckBox:SetTooltip("说明", tooltip)
+        memberFilterCheckBox:SetTooltipAnchor("ANCHOR_BOTTOMRIGHT")
+    end
+
     return memberFilterCheckBox
     -- local TCount = CreateFrame('CheckButton', nil, self) do
     --     TCount:SetNormalTexture([[Interface\Buttons\UI-CheckBox-Up]])
@@ -385,6 +394,9 @@ local function CreateScoreFilter(self,text,score)
             end
             self.ActivityList:Refresh()
         end)
+        GUI:Embed(filterScoreCheckBox, 'Tooltip')
+        filterScoreCheckBox:SetTooltip("说明", "过滤队长是0分的队伍, 可能有助于减少广告")
+        filterScoreCheckBox:SetTooltipAnchor("ANCHOR_TOPLEFT")
     end
 end
 
